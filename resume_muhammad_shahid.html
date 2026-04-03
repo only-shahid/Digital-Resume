@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Shahid — Resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --card: #1a1a26;
+    --accent: #7c6af7;
+    --accent2: #e8c547;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --border: #2a2a40;
+    --glow: rgba(124, 106, 247, 0.3);
+    --green: #25D366;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(124,106,247,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(232,197,71,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Action Bar */
+  .action-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  }
+
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-print {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-print:hover { border-color: var(--accent); box-shadow: 0 6px 20px var(--glow); }
+
+  .btn-whatsapp { background: #25D366; color: #fff; }
+  .btn-whatsapp:hover { box-shadow: 0 6px 20px rgba(37,211,102,0.35); }
+
+  .btn-pdf {
+    background: linear-gradient(135deg, var(--accent), #a78bfa);
+    color: #fff;
+  }
+  .btn-pdf:hover { box-shadow: 0 6px 20px var(--glow); }
+  .btn-pdf.loading { opacity: 0.7; pointer-events: none; }
+
+  .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* Container */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: end;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .name-block h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: var(--text);
+  }
+
+  .name-block h1 span { display: block; color: var(--accent); }
+
+  .tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .tagline::before { content: '// '; color: var(--accent2); }
+
+  .badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: center;
+    min-width: 110px;
+  }
+  .badge-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .badge-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Sections */
+  .section { margin-bottom: 48px; animation: fadeUp 0.8s ease both; }
+  .section:nth-child(2) { animation-delay: 0.1s; }
+  .section:nth-child(3) { animation-delay: 0.2s; }
+  .section:nth-child(4) { animation-delay: 0.3s; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Contact */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .contact-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .contact-item:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px var(--glow); }
+
+  .contact-icon { font-size: 1.2rem; width: 32px; text-align: center; flex-shrink: 0; }
+  .contact-info .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .contact-info .value { font-size: 0.88rem; color: var(--text); margin-top: 2px; word-break: break-all; }
+
+  /* Education */
+  .edu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .edu-icon { font-size: 2.2rem; flex-shrink: 0; }
+  .edu-info .degree { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
+  .edu-info .institution { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--accent); margin-top: 4px; }
+
+  /* Skills */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .skill-card:hover { border-color: var(--accent); box-shadow: 0 8px 28px var(--glow); transform: translateY(-3px); }
+  .skill-card:hover::before { transform: scaleX(1); }
+
+  .skill-icon { font-size: 1.8rem; margin-bottom: 10px; }
+  .skill-name { font-weight: 500; font-size: 0.95rem; }
+  .skill-desc { font-size: 0.78rem; color: var(--muted); margin-top: 4px; font-family: 'DM Mono', monospace; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    animation: fadeUp 0.8s ease 0.5s both;
+  }
+  .footer span { color: var(--accent); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .header { grid-template-columns: 1fr; }
+    .badge { display: none; }
+    .action-bar { gap: 8px; }
+    .btn { padding: 9px 14px; font-size: 0.72rem; }
+  }
+
+  /* Print Styles */
+  @media print {
+    .action-bar { display: none !important; }
+    body::before { display: none; }
+    body { background: #fff !important; color: #111 !important; }
+    :root { --text: #111; --muted: #555; --border: #ccc; --card: #f4f4f4; --bg: #fff; --accent: #5b4dd6; --accent2: #b8941a; }
+    .container { padding: 20px; }
+    * { box-shadow: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sticky Action Bar -->
+<div class="action-bar" id="actionBar">
+
+  <!-- Print Button -->
+  <button class="btn btn-print" onclick="window.print()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 6 2 18 2 18 9"/>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8"/>
+    </svg>
+    Print
+  </button>
+
+  <!-- WhatsApp Button -->
+  <a class="btn btn-whatsapp"
+     href="https://wa.me/923440524519?text=Assalam%20o%20Alaikum!%20Maine%20aapka%20resume%20dekha.%20Kya%20aap%20available%20hain%3F"
+     target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+    </svg>
+    WhatsApp
+  </a>
+
+  <!-- Download PDF Button -->
+  <button class="btn btn-pdf" id="pdfBtn" onclick="downloadPDF()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <polyline points="9 15 12 18 15 15"/>
+    </svg>
+    <span id="pdfBtnText">Download PDF</span>
+  </button>
+
+</div>
+
+<!-- Resume Content -->
+<div class="container" id="resumeContent">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="name-block">
+      <h1>Muhammad<span>Shahid</span></h1>
+      <p class="tagline">AI & Python Developer · Karachi, Pakistan</p>
+    </div>
+    <div class="badge">
+      <span class="badge-icon">🚀</span>
+      <span class="badge-label">Open to Work</span>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="section">
+    <div class="section-label">Contact</div>
+    <div class="contact-grid">
+      <a class="contact-item" href="tel:03440524519">
+        <span class="contact-icon">📞</span>
+        <div class="contact-info">
+          <div class="label">Phone</div>
+          <div class="value">0344-0524519</div>
+        </div>
+      </a>
+      <a class="contact-item" href="mailto:procodeworld@gmail.com">
+        <span class="contact-icon">✉️</span>
+        <div class="contact-info">
+          <div class="label">Email</div>
+          <div class="value">procodeworld@gmail.com</div>
+        </div>
+      </a>
+      <div class="contact-item">
+        <span class="contact-icon">📍</span>
+        <div class="contact-info">
+          <div class="label">Address</div>
+          <div class="value">H# 247, Sector 13/B, Nawab Colony, Baldia Town, Karachi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="section">
+    <div class="section-label">Education</div>
+    <div class="edu-card">
+      <span class="edu-icon">🎓</span>
+      <div class="edu-info">
+        <div class="degree">FSc Pre-Medical</div>
+        <div class="institution">Board of Secondary Education Karachi (BSEK)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skills -->
+  <div class="section">
+    <div class="section-label">Skills & Technologies</div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-name">Python</div>
+        <div class="skill-desc">Programming & Scripting</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">OpenAI SDK</div>
+        <div class="skill-desc">AI Integration & APIs</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🧠</div>
+        <div class="skill-name">Claude Code</div>
+        <div class="skill-desc">Agentic AI Development</div>
+      </div>
+    </div>
+    <div style="margin-top:12px; font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--muted);">
+      ✦ Certified from Governor House Karachi Initiative
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Built with <span>♥</span> · Muhammad Shahid · 2025
+  </div>
+
+</div>
+
+<script>
+  function downloadPDF() {
+    const btn = document.getElementById('pdfBtn');
+    const btnText = document.getElementById('pdfBtnText');
+    btn.classList.add('loading');
+    btnText.textContent = 'Generating...';
+
+    const element = document.getElementById('resumeContent');
+
+    const opt = {
+      margin: [8, 8, 8, 8],
+      filename: 'Muhammad_Shahid_Resume.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#0a0a0f'
+      },
+      jsPDF: {
+        unit: 'mm',
+        format: 'a4',
+        orientation: 'portrait'
+      }
+    };
+
+    html2pdf().set(opt).from(element).save()
+      .then(() => {
+        btn.classList.remove('loading');
+        btnText.textContent = 'Download PDF';
+      })
+      .catch(() => {
+        btn.classList.remove('loading');
+        btnText.textContent = 'Try Again';
+      });
+  }
+</script>
+
+</body>
+</html>
